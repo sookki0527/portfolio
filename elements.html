@@ -1,0 +1,370 @@
+<!DOCTYPE HTML>
+<!--
+	Massively by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+
+<html>
+	<head>
+		<title>Project1 Page</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<a href="index.html" class="logo">Project 2</a>
+					</header>
+
+				<!-- Nav -->
+					<nav id="nav">
+						<ul class="links">
+							<li><a href="index.html">Main</a></li>
+							<li><a href="delaunay.html">Project1</a></li>
+							<li class="active"><a href="elements.html">Project2</a></li>
+						</ul>
+						<ul class="icons">
+							<li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+							<li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
+							<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+							<li><a href="#" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+						</ul>
+					</nav>
+
+				<!-- Main -->
+					<div id="main">
+
+						<!-- Post -->
+							<section class="post">
+								<header class="major">
+									<span class="date"> Nov 14, 2023</span>
+									<h1>iGEM 2023 Project :<br />
+										Modified Flux Balance Analysis of <br>
+										20 Amino Acids </h1>
+									<p>The International Genetically Engineered Machine (iGEM) competition is a worldwide synthetic biology competition 
+										that was initially aimed at undergraduate university students, but has since expanded to include divisions for high school students, entrepreneurs, and community laboratories, as well as 'overgraduates'.
+									</p>
+								</header>
+					
+								
+										<div class="row">
+											<div class="column2">
+									<figure>
+										<img src="./images/lysine network.png"  style="width:100%" class = "center">
+										<figcaption>Matlab generated metabolic network of 20 amino acids</figcaption>
+									</figure>
+											 
+									
+								</div>
+								</div>
+								
+				<br>
+				<br>
+				<h2>Background</h2>
+								<p>Flux Balance Analysis(FBA) is the most widely used computational method for
+									simulating metabolism in genome-scale reconstructions of metabolic networks. Genomescale
+									metabolic pathway modeling, or flux balance analysis uses a stoichiometric matrix
+									of steady state metabolic reactions. Metabolic reactions are mediated by series
+									of "enzymes", whose functional diversity can dramatically increase the rates of reactions
+									in the metabolic pathway. Flux balance analysis uses Linear Programming method
+									that computes the maximum(or minimum) objective function given constraints of linear
+									equations. Controlling the amount of enzymes can play the key role in assessing the
+									possible range of metabolic flux distributions. In this research project, by controlling
+									the coefficients in each equation of metaobolic reactions, I observed the changed results
+									of output.</p>
+									<br>
+									<br>
+			<h2>Modified FBA implementation</h2>
+			<ul class = "a">
+				<li><h3>Linear Programming and simple FBA</h3></li>
+				<p>In FBA modeling, LP program has the form of:</p>
+				<div class="row">
+					<div class="column2">
+				<img src="./images/fbaequation.png"  style="width:50%" class = "center">
+			
+				</div>
+				</div>
+				<br>
+
+				<p>where 𝐯 represents the vector of fluxes, S is a matrix of coefficients, 𝑖 is the number of
+					equations and 𝑗 denotes the number of fluxes in each equation 𝑖. S is known, while we
+					have to find out 𝐯.
+					Flux balance analysis relied on an important assumption that metabolic model
+					reaches steady-state, which can be represented as the dot product of stoichiomatrix
+					coefficients (matrix S) and vector fluxes 𝐯 as 0.</p>
+
+					<div class="row" >
+						<div class="column">
+							<figure>
+								<img src="./images/fba.png"  style="width:100%" >
+								<figcaption>The demonstration of metabolic network </figcaption>
+							</figure>
+					
+				
+					</div>
+					<div class = "column">
+						<figure>
+							<img src="./images/fba2.png"  style="width:100% ;position:bottom" >
+							<figcaption>stoichiomatrix</figcaption>
+						</figure>
+
+					</div>
+					</div>
+			
+
+			<p>After assembling the reactions into the matrix S, bounds of each reaction is determined
+				by three cases: reaction occurs only in forward direction(𝐿𝐵𝑗 = 0,𝑅𝐵𝑗 =
+				𝑀), or only in backward direction(𝐿𝐵𝑗 = −𝑀,𝑅𝐵𝑗 = 0) or bidirectional(𝐿𝐵𝑗 =
+				−𝑀,𝑅𝐵𝑗 = 𝑀).</p>
+
+				<h4>A simple FBA example and problem</h4>
+<div class = "row">
+	<div class = "column2">
+				<figure>
+					<img src="./images/isoprene.png"  style="width:100% " >
+					<figcaption> A simple metabolic pathway example</figcaption>
+				</figure>
+
+			</div>
+			</div>
+<br>
+
+			<div class = "row">
+				<div class = "column">
+
+								<img src="./images/isoprene2.png"  style="width:100% " >
+
+								<figcaption>FBA modeling result of Isoprene Biosynthesis</figcaption>
+						</div>
+						<div class = "column">
+	
+								<img src="./images/isoprene3.png"  style="width:50% " >
+	
+						</div>
+						</div>
+	<p>The result of FBA modeling of Isoprene Biosyntheis II shows that objective function of maximizing vsink (= isoprene
+		output flux) is always 1000, which is equal to upper bound value. This result can be
+		explained by initial input amount flowing through the without any leakage straight to
+		the sink(=1000).</p>
+
+		<br>
+			<li><h3> 20 Amino Acid map</h3>
+				
+			<div class="row">
+				<div class="column2">
+			<figure>
+			<img src="./images/kegg.png"  style="width:100%" class = "center">
+			<figcaption>Image of 20 amino acids map (https://www.kegg.jp/pathway/)
+			</figcaption>
+			</figure>
+				 
+				</div>
+				</div>
+<br>
+
+				<p>
+					Using MATLAB and GurobiPy, 135 reactions and 191 metabolites were analyzed for
+flux balance analysis. MATLAB’s sbiomodel and its getstoichmatrix function returns
+stoichiomatrix of the entire model when all reactions are listed.
+
+				</p>
+				<p>The result of FBA modeling of 20 amino acids are:</p>
+				<div class="row" >
+					<div class="column">
+							<img src="./images/fbaresult2.png"  style="width:70%" >
+							<figcaption>Non zero fluxes after modeling </figcaption>
+					</div>
+				<div class = "column">
+						<img src="./images/aminoaciddict.png"  style="width:50% " >
+						<figcaption> the result output of 20 Amino acids</figcaption>
+		
+				</div>
+				</div>
+<br>
+
+<P>The result shows that only 3 fluxes 𝐯 out of 191 fluxes are not zeros and 188 fluxes
+	turned out to be zero. This result that most of the fluxes turned out to be zero are that
+	in (+) and out(-) of flow of each metabolite should be equal based on the steady state
+	formula. So if the initial input amount is 1000 somewhere in the source vertex, the sink
+	in the network will return 1000 as well after traveling the network map.</P>
+
+</li>
+<li><h3>Change of input enzymes (coefficient of stoichiomatrix) and results</h3>
+
+
+<p>In order to avoid the zeros in output in FBA modeling, I tried a method of changing
+	some coefficients in stoichiometric matrix S. In other words, if there is a reaction of
+	𝐴+𝐵 → 𝐶 +𝐷, I tried doubling or tripling the coefficients like 𝐴+2𝐵 → 𝐶 +𝐷 , and
+	it can be same as doubling the input of metabolite B. In addition, in order to make the
+	change of enzymes flow into each amino acid work, I deleted the steady-state equations
+	for 20 amino acids in the stoichiometric matrix</p>
+	<p>After randomly doubling 100 coefficients the fluxes that are not zeros are :</p>
+	<div class="row" >
+		<div class="column3">
+				<img src="./images/aaresult5.png"  style="width:80%" >
+				
+		</div>
+	<div class = "column3">
+			<img src="./images/aaresult6.png"  style="width:75% " >
+			<figcaption>Non-zero fluxes after modeling </figcaption>
+			
+	</div>
+	<div class = "column3">
+		<img src="./images/aaresult7.png"  style="width:75% " >
+		
+</div>
+	</div>
+	<br>
+
+	<div class = "row">
+		<div class = "column2">
+			<img src="./images/aadict.png" style = "width:55%" >
+			<figcaption>the result output of 20 Amino acids</figcaption>
+		</div>
+	</div>
+	<br>
+
+	<h4>Changing coefficients of input enzymes of specific amino acid and results</h4>
+	<ul>
+		<li>Putting more enzymes from Cystathionine to Cystine
+			<div class = "row">
+				<div class = "column">
+					<img src="./images/cysteine.png" style = "width:100%" >
+					<figcaption>Increasing the yellow arrow(coefficient)</figcaption>
+				</div>
+				<div class = "column">
+					<img src="./images/cysteine2.png" style = "width:100%" >
+					<figcaption>Increased output of cysteine </figcaption>
+				</div>
+			</div>
+
+
+		</li>
+<br>
+		<li>Putting more enzymes from Phenylalanine to Tyrosine
+			<div class = "row">
+				<div class = "column">
+					<img src="./images/Tyrosine.png" style = "width:100%" >
+					<figcaption>Increasing the yellow arrow(coefficient)</figcaption>
+				</div>
+				<div class = "column">
+					<img src="./images/Tyrosine2.png" style = "width:100%" >
+					<figcaption>Increased output of Tyrosine </figcaption>
+				</div>
+			</div>
+
+
+		</li>
+		<br>
+		<li>Putting more enzymes from Indoleglycerol phosphate to Tryptophan
+			<div class = "row">
+				<div class = "column">
+					<img src="./images/tryptophan.png" style = "width:100%" >
+					<figcaption>Increasing the yellow arrow(coefficient)</figcaption>
+				</div>
+				<div class = "column">
+					<img src="./images/tryptophan2.png" style = "width:100%" >
+					<figcaption>Increased output of Tyrosine </figcaption>
+				</div>
+			</div>
+
+
+		</li>
+	</ul>
+</li>
+
+<li><h2>Resources</h2>
+<ol>
+	<li>PlantCyc :PLANT METABOLIC PATHWAY DATABASES  (https://plantcyc.org/)</li>
+	<li> KEGG PATHWAY Database (https://www.kegg.jp/kegg/pathway.html)</li>
+	<li> Matlab</li>
+	<li> GurobiPy</li>
+</ol></li>
+<li><h2>References</h2>
+<ol>
+	<li>  Costas D. Maranas, Ali R. Zomorrodi, Optimization
+		Methods in Metabolic Networks, WILEY, 2016.</li> 
+		<li> Roy H. Kwon, Introduction to Linear Optimization and Extensions with MATLAB, CRC Press, 2014 </li>
+		<li> Mokhtar S. Bazaraa, John J. Jarvis, HanifD.Sherali, Linear Programming and Network Flows, WILEY, 2010.</li> 
+		<li>Xueyang Feng, A Powerpoint slide from 'Metabolic Flux Analysis by MATLAB', Dept. of Energy, Environmental \& Chemical Engineering
+			Washington University in St. Louis
+	<li>David L. Nelson, Michael M. Cox, Principles of Biochemistry, New York : W.H. Freeman, 2008. </li>
+</ol></li>
+	</ul>
+	</section>
+
+					</div>
+
+				<!-- Footer -->
+					<footer id="footer">
+						<section>
+							<form method="post" action="#">
+								<div class="fields">
+									<div class="field">
+										<label for="name">Name</label>
+										<input type="text" name="name" id="name" />
+									</div>
+									<div class="field">
+										<label for="email">Email</label>
+										<input type="text" name="email" id="email" />
+									</div>
+									<div class="field">
+										<label for="message">Message</label>
+										<textarea name="message" id="message" rows="3"></textarea>
+									</div>
+								</div>
+								<ul class="actions">
+									<li><input type="submit" value="Send Message" /></li>
+								</ul>
+							</form>
+						</section>
+						<section class="split contact">
+							<section class="alt">
+								<h3>Address</h3>
+								<p>2985 Aurora Ave., #206b<br />
+								Boulder, CO, 80303</p>
+							</section>
+							<section>
+								<h3>Phone</h3>
+								<p><a href="#">303-875-8115</a></p>
+							</section>
+							<section>
+								<h3>Email</h3>
+								<p><a href="#">suba3793@colorado.edu</a></p>
+							</section>
+							<section>
+								<h3>Social</h3>
+								<ul class="icons alt">
+				
+									<li><a href="http://github.com/shb0527" class="icon brands alt fa-github"><span class="label">GitHub</span></a></li>
+								</ul>
+							</section>
+						</section>
+					</footer>
+
+				<!-- Copyright -->
+					<div id="copyright">
+						<ul><li>&copy; Untitled</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li></ul>
+					</div>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
+</div>
