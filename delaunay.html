@@ -1,0 +1,431 @@
+<!DOCTYPE HTML>
+<!--
+	Massively by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+
+<html>
+	<head>
+		<title>Project1 Page</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<a href="index.html" class="logo">Project 1</a>
+					</header>
+
+				<!-- Nav -->
+					<nav id="nav">
+						<ul class="links">
+							<li><a href="index.html"> Main</a></li>
+							<li class="active"><a href="delaunay.html">Project1</a></li>
+							<li><a href="elements.html">Project2</a></li>
+						</ul>
+						<ul class="icons">
+							<li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+							<li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
+							<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+							<li><a href="#" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+						</ul>
+					</nav>
+
+				<!-- Main -->
+					<div id="main">
+
+						<!-- Post -->
+							<section class="post">
+								<header class="major">
+									<span class="date">Jan 09, 2024</span>
+									<h1>Delaunay Triangulation <br />
+									with Divide and Conquer</h1>
+									<p>A tessellation or tiling is the covering of a surface, often a plane, using one or more geometric shapes, called tiles, with no overlaps and no gaps.
+										In geometry, a triangulation is a subdivision of a planar object into triangles.</p>
+								</header>
+								<div class="row">
+									<div class="column2">
+									  <img src="./images/tesselation.jpg"  style="width:60%" class = "center">
+									</div>
+									</div>
+							<br>
+									<br>
+								<p> Delaunay triangulation is widely used mesh-building technique that creates triangles
+                                    with the given set of points. In Delaunay principle, no point in the plane is in the
+                                    circumcircle of any triangle in delaunay triangulation. There are several algorithms for
+                                    computing delaunay triangulation and already MATLAB and Scipy library packages
+                                    can be seen.</p>
+								<p>The most popular algorithm for Delaunay Triangulation is Bowyer–Watson algorithm
+                                    which repeatedly adds a vertex, split into a triangle and then flip one edge.
+                                    Although the divide and conquer method for Delaunay Triangulation was developed
+                                    by Guibas and Stolfi in 1985, and its algorithm mostly exists in article and in lengthy
+                                    explanation but its actual implementation in code cannot be easily seen. I initiatively
+                                    programmed delaunay triangulation using divide and conquer method with C++ languagage
+                                    purely on my own, and I am going to explain the procedure in this essay..</p>
+
+                                    <div class="image main"><img src="./" alt="" /></div>
+                                    <h2> Implementation Details</h2>
+									<h3> Slicing the points</h3>
+									<p>First, the given set of points are successively divided into halves until each partition
+										has 2 or 3 points, and edges are drawn between 2 or 3 points.</p>
+										<div class="row">
+											<div class="column">
+											  <img src="./images/del1-1.png"  style="width:100%" class = "center">
+											</div>
+											<div class="column">
+											  <img src="./images/del1.png"  style="width:100%">
+											</div>
+										
+										  </div>
+									<h3>Merging </h3>
+									<ul class="a">
+										<li><h4>Drawing Base LR Edges</h4>
+										
+											<p>The first step for merging the two halves is to insert the base LR-edge. The base
+												LR-edge is the bottom-most LR-edge which does not intersect any LL or RR-edges. If
+												the base LR Edge does not intersect any existing edges, the base LR edge is added to
+												the edges set.</p>
+										<br>
+												<div class="row">
+													<div class="column">
+													  <img src="./images/baseLR.png"  style="width:100%" class = "center">
+													</div>
+													<div class="column">
+													  <img src="./images/del2.png"  style="width:100%">
+													</div>
+												
+												  </div>
+										
+										</li>
+										<br>
+										<br>
+										<li> <h4>Choosing Potential candidates and Deleting Edges</h4>
+											<br>
+										<p>The potential candidates of both right side and left side are checked if they meet the two
+											criteria: </p>
+											<ol class>
+												<li>The clockwise angle from the base LR-edge to the potential candidate must be
+													less than 180 degrees</li>
+												<li> The circumcircle defined by the two endpoints of the base LR-edge and the potential
+													candidate must not contain the next potential candidate in its interior.</li>
+											</ol>
+											<p>If second criteria does not hold: the edges in the right section that has the end point
+												of base LR edge is deleted.If both criteria are satisfied, the potential candidate becomes
+												our final candidate for the right side.</p>
+
+												<pre>
+													<code> 
+														
+template&lt; typename T &gt;
+const std::vector&lt; std::pair&lt;std::pair&lt;T, T &gt;, std::pair&lt;T, T&gt; &gt;&gt;
+	delaunay&lt;T&gt;::potentials(std::vector&lt;Vector2&lt;T&gt;&gt;& vertices1, std::vector&lt;Vector2&lt;T&gt;&gt;& vertices2,
+		std::pair&lt;T, T&gt; np1, std::pair&lt;T, T&gt; np2, bool isStart, int depth) {
+				
+			...
+
+/******************  RR edge  *************************/
+   T start = 0;
+   T angle = 0;
+   std::vector&lt;Vector2&lt;double&gt;&gt;::iterator it;
+   std::vector&lt;Vector2&lt;double&gt;&gt; Right_klist;
+   bool isright = false;
+   int rcount = 0;
+   for (auto& k : vertices2)
+   {
+       start++;
+
+       std::pair&lt;T, T&gt; p3 = { k.x, k.y };
+
+       double dot = k.x * (p2.x) + k.y * p2.y;
+       double ma = sqrt(k.norm2());
+       double mb = sqrt(p2.norm2());
+       angle = acos(dot / (ma * mb));
+       angle = angle * 180 / 3.1415;
+
+       if (angle > 0 && angle < 180)
+       {
+
+           const TriangleType t = TriangleType{ p1, p2, k };
+           int c = 0;
+           for (it = vertices2.begin() + start; it != vertices2.end(); it++) {
+
+               if (t.circumCircleContains(*it)) {
+
+                   _edges.erase(std::remove_if(begin(_edges), end(_edges), [np2, p3]
+                   (std::pair&lt;std::pair&lt;T, T&gt;, std::pair&lt;T, T&gt; &gt;& j) {
+                           return containstwoPoints(j, np2, p3); }), end(_edges));
+                   break;
+
+               }
+
+               else { c++; }
+           }
+           if (c == (vertices2.size() - start)) {
+               // potential is submitted
+               isright = true;
+               Right_klist.push_back(k);
+               rcount++;
+           }
+
+       }
+   }
+
+   ///******************  LL edge  *************************/
+   start = 0;
+   bool isleft = false;
+   int lcount = 0;
+   std::vector&lt;Vector2&lt;double&gt;&gt; Left_klist;
+   for (auto& k : vertices1)
+   {
+       start++;
+
+       std::pair&lt;T, T&gt; p3 = { k.x, k.y };
+
+       double dot = k.x * (p1.x) + k.y * p1.y;
+       double ma = sqrt(k.norm2());
+       double mb = sqrt(p1.norm2());
+       angle = acos(dot / (ma * mb));
+       angle = angle * 180 / 3.1415;
+
+       if (angle > 0 && angle < 180)
+       {
+
+           const TriangleType t = TriangleType{ p1, p2, k };
+           int c = 0;
+           for (it = vertices1.begin() + start; it != vertices1.end(); it++) {
+
+               if (t.circumCircleContains(*it)) {
+                   _edges.erase(std::remove_if(begin(_edges), end(_edges), [np1, p3]
+                   (std::pair&lt;std::pair<T, T>, std::pair<T, T> >& j) {
+                           return containstwoPoints(j, np1, p3); }), end(_edges));
+                           break; }
+               else { c++; }
+           }
+           if (c == (vertices1.size() - start)) {
+               // potential is submitted
+               isleft = true;
+               Left_klist.push_back(k);
+               lcount++;
+
+           }
+
+       }
+
+   }
+  }</code></pre>
+		<br>
+		<br>
+
+		<div class="row">
+			<div class="column2">
+			  <img src="./images/del4.png"  style="width:100%" class = "center">
+			</div>
+	
+		  </div>
+		  <br>
+
+		  <div class="row">
+			<div class="column2">
+				<img src="./images/del3.png"  style="width:70%" class = "center">
+			  </div>
+		  
+		
+		  </div>
+		  <br>
+		  <br>
+
+										<li><h4> Creating new LR Edges </h4>
+											<p>The new LR edges are added after adding base LR edges following the same procedure
+												as the base LR edge and following procedures are repeated.</p>
+												<ol>
+													<li>When neither a right nor a left candidate is submitted, the merge is complete.</li>
+													<li>If only one candidate is submitted, it automatically defines the LR-edge to be
+														added.</li>
+													<li>When both candidates are submitted, if the right candidate is not contained in
+														interior of the circle defined by the two endpoints of the base LR-edge and the
+														left candidate, then the left candidate defines the LR-edge and vice-versa.</li>
+												</ol>
+<pre><code>
+if (depth != vertices1.size()) {
+	if (isleft == true && isright == false) {
+		std::sort(Left_klist.begin(), Left_klist.end(), [](Vector2&lt;T&gt; a, Vector2&lt;T&gt; b) { return a.x > b.x; });
+
+		for (auto& a : Left_klist) {
+			const std::pair&lt;T, T&gt; new_pair1 = { a.x, a.y };
+			const std::pair&lt;T, T&gt; new_pair2 = { vertices2[0].x, vertices2[0].y };
+			if (delaunay_intersect(new_pair1, new_pair2)) {
+				_edges.push_back({ new_pair1, new_pair2 });
+				potentials(vertices1, vertices2, new_pair1, new_pair2, false, depth + 1);
+			}
+		} return _edges;
+	}
+	else if (isleft == false && isright == true) {
+		std::sort(Right_klist.begin(), Right_klist.end(), [](Vector2&lt;T&gt; a, Vector2&lt;T&gt; b) { return a.x < b.x; });
+
+		for (auto& a : Right_klist) {
+			const std::pair&lt;T, T&gt; new_pair1 = { vertices1[0].x, vertices1[0].y };
+			const std::pair&lt;T, T&gt; new_pair2 = { a.x, a.y };
+			if (delaunay_intersect(new_pair1, new_pair2)) {
+				_edges.push_back({ new_pair1, new_pair2 });
+				potentials(vertices1, vertices2, new_pair1, new_pair2, false, depth + 1);
+			}
+		}
+	}
+	else if (isleft == true && isright == true) {
+		std::sort(Left_klist.begin(), Left_klist.end(), [](Vector2&lt;T&gt; a, Vector2&lt;T&gt; b) { return a.x > b.x; });
+		std::sort(Right_klist.begin(), Right_klist.end(), [](Vector2&lt;T&gt; a, Vector2&lt;T&gt; b) { return a.x < b.x; });
+		const TriangleType t = TriangleType{ p1, p2, Left_klist[0] };
+		if (!t.circumCircleContains(Right_klist[0])) {
+			std::sort(Right_klist.begin(), Right_klist.end(), [](Vector2&lt;T&gt; a, Vector2&lt;T&gt; b) { return a.x < b.x; });
+			for (auto& a : Right_klist) {
+				const std::pair&lt;T, T&gt; new_pair1 = { vertices1[0].x, vertices1[0].y };
+				const std::pair&lt;T, T&gt; new_pair2 = { a.x, a.y };
+				if (delaunay_intersect(new_pair1, new_pair2)) {
+					_edges.push_back({ new_pair1, new_pair2 });
+					potentials(vertices1, vertices2, new_pair1, new_pair2, false, depth + 1);
+				}
+			}
+		}
+		else {
+
+			std::sort(Left_klist.begin(), Left_klist.end(), [](Vector2&lt;T&gt; a, Vector2&lt;T&gt; b) { return a.x > b.x; });
+			std::sort(Right_klist.begin(), Right_klist.end(), [](Vector2&lt;T&gt; a, Vector2&lt;T&gt; b) { return a.x < b.x; });
+			const TriangleType t = TriangleType{ p1, p2, Right_klist[0] };
+			if (!t.circumCircleContains(Left_klist[0])) {
+
+				for (auto& a : Left_klist) {
+					const std::pair&lt;T, T&gt; new_pair1 = { a.x, a.y };
+					const std::pair&lt;T, T&gt; new_pair2 = { vertices2[0].x, vertices2[0].y };
+					if (delaunay_intersect(new_pair1, new_pair2)) {
+						_edges.push_back({ new_pair1, new_pair2 });
+						potentials(vertices1, vertices2, new_pair1, new_pair2, false, depth + 1);
+					}
+				}
+			} return _edges;
+		}
+	}
+}
+else { return _edges; }
+</code></pre>
+<div class="row">
+	<div class="column2">
+	  <img src="./images/del5.png"  style="width:70%" class = "center">
+	</div>
+
+
+  </div>
+
+
+
+				</li>
+			</ul>
+			<br>
+			<br>
+		<h2> Result</h2>
+		<br>
+		<div class="row">
+			<div class="column2">
+			  <img src="./images/delaunay_color2.png"  style="width:70%" class = "center">
+			</div>
+			</div><br>
+			<br>
+			<div class = "row">
+				
+			<div class="column2">
+				<img src="./images/del7.png"  style="width:70%" class = "center">
+			  </div>
+</div>
+			<br>
+			<br>
+<br>
+<br>
+
+			<h2>References </h2>
+
+			<ul class = "a">
+				<li>http://www.geom.uiuc.edu/~samuelp/del_project.html#acknowledgments</li>
+				<li>https://github.com/bl4ckb0ne/delaunay-triangulation</li>
+			</ul>
+<h3>More detailed code </h3>
+<ul class="icons alt">
+				
+	<li><a href="http://github.com/shb0527" class="icon brands alt fa-github"><span class="label">GitHub</span></a>
+</ul>
+
+	</section>
+
+					</div>
+
+				<!-- Footer -->
+					<footer id="footer">
+						<section>
+							<form method="post" action="#">
+								<div class="fields">
+									<div class="field">
+										<label for="name">Name</label>
+										<input type="text" name="name" id="name" />
+									</div>
+									<div class="field">
+										<label for="email">Email</label>
+										<input type="text" name="email" id="email" />
+									</div>
+									<div class="field">
+										<label for="message">Message</label>
+										<textarea name="message" id="message" rows="3"></textarea>
+									</div>
+								</div>
+								<ul class="actions">
+									<li><input type="submit" value="Send Message" /></li>
+								</ul>
+							</form>
+						</section>
+						<section class="split contact">
+							<section class="alt">
+								<h3>Address</h3>
+								<p>2985 Aurora Ave., #206b<br />
+								Boulder, CO, 80303</p>
+							</section>
+							<section>
+								<h3>Phone</h3>
+								<p><a href="#">303-875-8115</a></p>
+							</section>
+							<section>
+								<h3>Email</h3>
+								<p><a href="#">suba3793@colorado.edu</a></p>
+							</section>
+							<section>
+								<h3>Social</h3>
+								<ul class="icons alt">
+				
+									<li><a href="http://github.com/shb0527" class="icon brands alt fa-github"><span class="label">GitHub</span></a></li>
+								</ul>
+							</section>
+						</section>
+					</footer>
+
+				<!-- Copyright -->
+					<div id="copyright">
+						<ul><li>&copy; Untitled</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li></ul>
+					</div>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
+</div>
