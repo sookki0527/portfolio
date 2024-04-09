@@ -1,0 +1,256 @@
+<!DOCTYPE HTML>
+<!--
+	Massively by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+
+<html>
+	<head>
+		<title>Project2 Page</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<a href="index.html" class="logo">Project 1</a>
+					</header>
+
+				<!-- Nav -->
+					<nav id="nav">
+						<ul class="links">
+							<li><a href="index.html"> Main</a></li>
+							<li><a href = "viterabi.html">Project1</a></li>
+							<li class = "active"><a href = "multithread.html">Project2</a></li>
+							<li><a href="delaunay.html">Project3</a></li>
+							<li><a href="elements.html">Project4</a></li>
+						</ul>
+						<ul class="icons">
+							<li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+							<li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
+							<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+							<li><a href="#" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+						</ul>
+					</nav>
+
+				<!-- Main -->
+					<div id="main">
+
+						<!-- Post -->
+							<section class="post">
+								<header class="major">
+									<span class="date">March - April, 2024</span>
+									<h1> Multithreaded DNS Resolver  <br /> </h1>
+									<p> </p>
+								</header>
+								<div class="row">
+									<div class="column2">
+									  <img src="./images/multithreaded resolver.png"  style="width:60%" class = "center">
+                                      <p class ="center">  Multiple Sequenge Alignments </p>
+									</div>
+                                    
+									</div>
+                            <br>
+                            <br>
+                                        <p>Sequence similarity searching is the most important aspect in computational biology and it is directly linked to Protein Structure prediction. BLAST has been the most popular software for finding sequence similarity and HMMER was also proved as a powerful tool for sequence analysis using probabilistic hidden markov models. The output data of BLAST and HMMER are used as an input for Protein structure prediction tools such as Jpred(Cole et al, 2008), and the HMMER algorithms are used in AlphaFold (Jumper et al, 2021).</p>
+                           
+                                  
+<h2>HMMER : Construction of profile HMM </h2>
+                                    <div class="row">
+                                        <div class="column">
+                                          <img src="./images/hmmer homepage.png"  style="width:100%" class = "center">
+                                        </div>
+                                        <div class="column">
+                                            <img src="./images/hmmer userguide.png"  style="width:100%" class = "center">
+                                          </div>
+                                        </div>
+							<br>
+									<br>
+                
+								<p> HMMER is one of the most powerful tools of sequence similarity searching, and it can be used by downloading the source code via http://hmmer.org/.
+                                   It runs bascially by using command-lines in Linux environment. </p>
+								<p>hmmerbuild is the core functionality along with hmmsearch, which generates a profile (matrix) from input sequence alignments. The profile HMM, which is produced from hmmbuild function, is called Position-specific Scoring Matrix(PSSM) using probabilistic model with hidden Markov model.</p>
+                                <p> With the profile HMM constructed with hmmerbuild as input, we can search similar sequences by typing hmmersearch on the shell.</p>
+                                    
+                                <div class="row">
+                                    <div class="column">
+                                      <img src="./images/hmmbuild.png"  style="width:100%" class = "center">
+                                        <p >hmmbuild command to generate a PSSM</p>
+                                    </div>
+                                    <div class="column">
+                                      <img src="./images/hmmbuild2 (1).png"  style="width:100%">
+                                      <p >The output of Position Specific Scoring Matrix </p>
+                                    </div>
+                                
+                                  </div>
+                            <p> In traditional Markov Chain Model, it has two probability parameters, transition probability and emission probibility</p>
+                             <ul class = "center">
+                                <li>Transition Probability : \(a_{jk}= P(\pi_i = l | \pi_{i-1} = k)\) <br>: the prabability of transition from state \(l\) to \(k\), where \(\pi_i\) is the state sequence or path </li>
+                                <li>Emission Probability : \(e_k(b) = P(x_i = b | \pi_i = k)\)<br>: the prabbility that symbol \(b\) is seen when in state \(k\).</li>
+                            
+                                </ul>
+                       <h3> Pairwise sequence with HMM </h3>
+                           <p> When the hidden Markov model is used in pairwise alignment of DNA sequences, we have three states
+                            : M(match), I(insert), D(delete). 
+                           
+                           We define \(p_{ab}\) as state M has emission probability distribution for emitting aligned pair a:b and state I and D will have \(q_a\) and \(q_b\).</p>
+                                
+                           <p> Then we discuss how to construct a profile HMM when multiple sequences alignements are given. We start by computing transition probability and emission probability by counting up the number of times each transition or
+                            emission occurs during the processes.</p>
+                            <p class = "center"> \(a_{kl} = \frac{A_{kl}}{\sum_{l'}^{}A_{kl'}}\) \(\hspace{0.2in}\) and   \(\hspace{0.2in}\)\(b_k(c) = \frac{B_k(c)}{\sum_{c'}B_kc'}\) </p>
+                            
+                            <p> where \(k\) and \(l\) are indices over states, \(a_{kl}\) is the transition probability from \(k\) to \(l\), and \(b_k(c)\)  the emission probability that the symbol \(𝑐\) is emitted from state \(𝑘\). </p>
+                           
+                           <div class = "row">
+                            <div class=" column2">
+                                <img src="./images/profileHMM.png"  style="width:50%" class = "center">
+                                <p class = "center"> The structure of profile HMM (M:  match, I: insert, D: delete)</p>
+                            </div>
+                           </div>
+
+<p> From the above picture of 'The output of Position Specific Scoring Matrix, the symbols of the row indices in the table indicate 20 amino acids and transitions \((m \to m, m\to i, m\to d, \ldots , d \to d)\), where \(m, i, d\) denote the three states of match, insert and delete of previous path sequence state to the current path sequence of state. </p>
+<br>
+<br>
+    <h2> Search or Path finding algorithm : Viterbi Algorithm  </h2>   
+    <p> The main purpose of BLAST and HMMER is to find the most similar sequences
+        with the target sequence from the source database. By typing hmmersearch in command-line, HMMER prints out list of the most similar sequences.
+    Hmmer program is written in C++ langauge, and the search algorithm is Viterbi Algorithm and Forward/Backward algorithm which are based on dynamic programming.  </p>
+<p> The key point here is that we have to use the profile HMM, the PSSM that we constructed using hmmerbuild, as input. </p>   
+
+<p> In traditional Viteri Algorithm using hidden Markov Model, we are finding the path with the highest probability : </p>
+<p class= "center"> \(\pi^* = argmax_{\pi} P(x, \pi)\)   </p>
+where \(x \) is the observecd sequence and \(\pi\) denotes the state. The most probabale \(\pi^*\) can be found resursively. 
+<p class = "center"> \(v_l(i+1) = e_l(x_{i+1})max_k(v_k(i)a_{kl})\), and \(v_0(0) = 1\).</p> 
+<p> When the above viterbi equation is applied in pairwise alignment with profile HMM, it becomes: </p>
+<div class = "row">
+    <div class = "column2">
+        <img src="./images/viterbi.png"  style="width:70%" class = "center">
+    </div>
+</div>
+
+<br>
+<br>
+<p> In the above equations, \(V_M\), \(V_I\) and \(V_D\) are viterbi scoring for each state M, I and D. We know that \(e_{M_j}(x_i)\) is the emission probability of emitting \(x_i\) in the amtch state \(M_j\), and the values of log\(\frac{e_{M_j}(x_i)}{q_{xi}}\)
+
+    are elements of position specific score matrix or
+    profile HMM we obtained in the previous section, especially the columns under each
+    amino acid. The values of log \(a_{M_{j-1}𝑀_𝑗}\) orlog \(a_{I_{j-1}𝑀_𝑗}\)  are the log value of the transition
+    probability which are also presented in the profile HMM </p>
+<br>
+<br>
+<h3> Searching with profile HMM and Viterbi Algorithm with python code </h3>
+I present a python code that can find optimal path sequence with the best probability using Viterbi algorithm and customized profile HMM data. Since the original profile HMM is too big, I made a small dataset showing transitional probability and emission probability, whose values are similar to those in real profile HMM files. I programmed based on the book of Durbin et al , and standard HMM code and tried to implement the algorithms above.
+I can say this is \textbf{original contribution of mine}, since there are none of python code specifically for pairwise sequence HMM Viterbi algorithm. The code in HMMER software is written in C++, and it was way to complicated to interpret it, and based on the understanding on the book and on the PSSM, I programmed the code in python that can run for very small data.  
+<br>
+<br>
+<br>
+<br>
+    <div class = "row">
+        <div class = "column2">
+            <img src="./images/code1.png"  style="width:70%; height: 300px" class = "center">
+            <p class= "center"> Python code implementation of Viterbi Search Algorithm with profile HMM input </p>
+        </div>
+        <div class = "column2">
+            <img src="./images/code2.png"  style="width:50%; height: 200px" class = "center">
+            <p class = "center"> Customized small dataset of transition, emission probability based on profile HMM result</p>
+        </div>
+    <div class = "column2">
+        <img src="./images/code3.png"  style="width:50%" class = "center">
+    </div>
+    </div>
+
+		
+			<br>
+			<br>
+<br>
+<br>
+
+			<h2>References </h2>
+
+			<ul class = "a">
+				<li>  Durbin, R., Eddy, S., Krogh A., Mitchison, G.(1998). Biological sequence analysis -
+                    Probabilistic models of proteins and nucleic acids. Cambridge University Press.</li>
+				<li>Aluru, S.(2006). Chapter 2 - 4 in Handbook of Computational Molecular Biology. Chapman \& Hall/CRC Taylor \& Francis Group.</li>
+                    <li> Eddy S.(2023). HMMER User’s Guide : Biological sequence analysis using profile hidden Markov models. Howard Hughes Medical Institute
+                    </li>
+            </ul>
+
+	</section>
+
+					</div>
+
+				<!-- Footer -->
+					<footer id="footer">
+						<section>
+							<form method="post" action="#">
+								<div class="fields">
+									<div class="field">
+										<label for="name">Name</label>
+										<input type="text" name="name" id="name" />
+									</div>
+									<div class="field">
+										<label for="email">Email</label>
+										<input type="text" name="email" id="email" />
+									</div>
+									<div class="field">
+										<label for="message">Message</label>
+										<textarea name="message" id="message" rows="3"></textarea>
+									</div>
+								</div>
+								<ul class="actions">
+									<li><input type="submit" value="Send Message" /></li>
+								</ul>
+							</form>
+						</section>
+						<section class="split contact">
+							<section class="alt">
+								<h3>Address</h3>
+								<p>2985 Aurora Ave., #206b<br />
+								Boulder, CO, 80303</p>
+							</section>
+							<section>
+								<h3>Phone</h3>
+								<p><a href="#">303-875-8115</a></p>
+							</section>
+							<section>
+								<h3>Email</h3>
+								<p><a href="#">suba3793@colorado.edu</a></p>
+							</section>
+							<section>
+								<h3>Social</h3>
+								<ul class="icons alt">
+				
+									<li><a href="http://github.com/shb0527" class="icon brands alt fa-github"><span class="label">GitHub</span></a></li>
+								</ul>
+							</section>
+						</section>
+					</footer>
+
+				<!-- Copyright -->
+					<div id="copyright">
+						<ul><li>&copy; Untitled</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li></ul>
+					</div>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+            <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
+            <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+	</body>
+</html>
+</div>
