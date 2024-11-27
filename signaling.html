@@ -1,0 +1,248 @@
+<!DOCTYPE HTML>
+<!--
+	Massively by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+
+<html>
+<head>
+    <title>Project3 Page</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+</head>
+<body class="is-preload">
+
+<!-- Wrapper -->
+<div id="wrapper">
+
+    <!-- Header -->
+    <header id="header">
+        <a href="index.html" class="logo">Project 1</a>
+    </header>
+
+    <!-- Nav -->
+    <nav id="nav">
+        <ul class="links">
+            <li><a href="index.html">Main</a></li>
+            <li class ="active"><a href="signaling.html "> Project1</a></li>
+            <li><a href = "viterbi.html">Project2</a></li>
+            <li ><a href = "multithread.html">Project3</a></li>
+            <li><a href="delaunay.html">Project4</a></li>
+            <li><a href="elements.html">Project5</a></li>
+        </ul>
+        <ul class="icons">
+
+            <li><a href="#" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+        </ul>
+    </nav>
+
+    <!-- Main -->
+    <div id="main">
+
+        <!-- Post -->
+        <section class="post">
+            <header class="major">
+                <span class="date"> Nov 27, 2024</span>
+                <p> (Personal Project)</p>
+                <h1> Cellular signaling Pathway Status Board <br />
+                    using Object-Oriented Programming in Java <br>
+                    </h1>
+                <p> A real-time status board for a cellular signaling pathway system, updating activities based on a virtual simulation of a cell,
+                    leveraging key object-oriented programming concepts such as polymorphism, inheritance, observer pattern, command pattern, and strategy pattern.
+                </p>
+            </header>
+
+
+
+            <div class = "row"style = "  margin-bottom: 50px;">
+                <div class = "column2">
+                    <figure><img src = "./images/output7.png" style = "width: 1000px; height: auto;" class = "center"></figure>
+                </div>
+            </div>
+            <div class = "row">
+                <div class = "column2">
+                    <figure><img src = "./images/output8.png" style = "width: 1000px; height: auto;" class = "center"></figure>
+                </div>
+            </div>
+            <br>
+            <br>
+            <h2>Background</h2>
+            <p>While brainstorming project ideas that could effectively utilize key object-oriented design concepts such as inheritance, abstraction and composition,
+                I thought that modeling the structure of molecules within a cell and the cross-talk between signaling pathways would be an excellent application.
+                Various molecules, such as ligands, receptors, and transcription factors, can be grouped into categories using polymorphism and inheritance.
+                Simulating pathways in a cell is akin to running a game, and I utilized the observer pattern to dynamically display real-time signal states on specific cards in the user interface.
+            </p>
+
+                <div class = "column2">
+                    <figure><img src = "./images/Signal%20transduaction%20pathways.png" style = "width: 700px; height: auto;" class = "center"></figure>
+                    <figcaption>     Image from <em>Molecular Cell Biology</em>, Lodish, Harvey. 5th ed., New York: W. H. Freeman and Co., 2003.</figcaption>
+                </div>
+
+            <br>
+            <br>
+            <h2>Implementation</h2>
+            The simulation begins with extracellular ligands binding to their specific receptors on the cell surface, triggering the activation of translocation factors
+            that move into the nucleus. Initially, molecules within the outer and inner cell are set according to their real-life ratios, while the nucleus starts empty.
+            Regulatory dynamics, such as deactivation or dephosphorylation of molecules, are also incorporated to reflect realistic behavior.
+            <br>
+            <br>
+            <ul class = "circle-bullets">
+                <li><h3>Major Pathways in this project  </h3></li>
+                <ul class="none-bullets"><li>- TGFB Pathway</li><li> - JAK-STAT Pathway</li> <li> - Ras-MAP Pathway</li><li> - MAPK Pathway</li></ul>
+                <p>Each pathway typically progresses through phases that involve shared molecules.
+                    These pathways were structured using strategy pattern each commonly have phase 1, phase 2, phase 3 that are interchangeable.
+
+
+                </p>
+                <li><h3>Base structure</h3></li>
+              <ul class = "none-bullets">
+                  <li> - Ligands directory: Cytokine, EGF, TGF-&beta; classes</li>
+                  <li> - Receptors directory: TGF- &beta; receptors, RTK, EPOR classes</li>
+                  <li> - Kinases directory : JAK2, MEK, Raf, MAPkinase classes</li>
+                  <li> - Transcription Factors directory: Smad, Stat classes</li>
+                  <li> - Regulatory Protein directory: SHP1, Ski, SOCS, SOS classes </li>
+                  <li> - GDP, GNP, Ras and Tyrosine Residues</li>
+                  <li> - Outer Cell class: Ligands exist </li>
+                  <li> - Inner Cell class: Receptors, Kinases, Transcription factors, Regulatory protein, GDP, GNP, <br>
+                      &nbsp;&nbsp;&nbsp;  Ras, Tyrosine Residue exist </li>
+                  <li> - Nucleus : Transcription factors enter as the simulation runs</li>
+                  <li> - Simulation world class: simulating four pathways involving interactions from outer cell to inner cell and nucleus</li>
+                  <li> I used factory pattern to generate each instance belonging to each group above. </li>
+              </ul>
+                <li><h3>  Signaling interaction mechanism </h3></li>
+                <ul class = "none-bullets">
+                    <li>- Bind Command class</li>
+                    <li>- Phosphorylate Command class</li>
+                    <li>- Dephosphorylate Command class</li>
+                    <li>- Activate Command class</li>
+                    <li>- Deactivate Command class</li>
+                    <br>
+
+                    <p> I implemented the Command Pattern to execute commands in various cell interaction scenarios, with the processes displayed in the UI using the Observer Pattern.
+                        </p>
+                </ul>
+                <li><h3>Observer UI mapping to commands </h3></li>
+                <p> Through the Observer Pattern, different observer UI components are mapped to specific commands, ensuring that each observer receives updates relevant to its
+                    associated command.</p>
+                <div class = "column2">
+                    <figure><img src = "./images/observer.png" style = "width: 700px; height: auto;" class = "center"></figure>
+                    <figure><img src = "./images/observer2.png" style = "width: 660px; height: auto;" class = "center"></figure>
+                </div>
+
+                <li><h3>Implemention</h3></li>
+                <ul class="square-bullets">
+                <li>TGF &beta; Pathway : TGF &beta; binds to TGF &beta; receptor if it's not bound yet (phase 1), and then the receptor activates the Smad, the transcription factor (phase 2), and smad complex enters the Nucleus (phase 3).</li>
+                 <li> JAK-STAT pathway: Cytokine binds to its receptor EpoR, and receptor phoshporylates (phase 1), and the Jak2, the kinase, also binds to the receptor and phoshporylates the tyrosine residue.
+                 (phase 2). The transcription factor Stat binds to tyrosine residue (phase 3), and then the stat goes into nucleus(phase 4).</li>
+                    <li> Ras-MAP Pathway : EGF binds to its receptor RTK (phase 1), and Ras becomes active as it binds to GDP while GDP exchanges to GTP (phase 2). When GTP hydrolyzes to GDP, it Ras becomes inactive again(phase three).</li>
+
+               <li> MAPK Pathway: When Ras sets active in Ras-MAP Pathway by binding to GTP, Raf binds to Ras-GTP , then MAP kinase becomes active (Phase 1). Raf unbinds from Ras-GTP
+               and MEK, MEK phosphrylates Map Kinase(phase 2). MAP kinase enters nucleus(Phase three).</li>
+
+                    <li> Regulation: In each pathway, regulatory dynamics are involved, where regulatory protein such as SHP1, Ski, SOCS, SOS deactivates receptors or complexes. </li>
+                </ul>
+                <div class = "column2">
+                    <figure><img src = "./images/Code.png" style = "width: 700px; height: auto;" class = "center"></figure>
+                    <figcaption> An example of a pathway code implemenation</figcaption>
+                </div>
+                <li><h3> Simulation </h3></li>
+                <ul class = "none-bullets">
+                    <li>Using Runnable java interface, I treated each pathway as a task that can be executed by a thread, so that multilple threads run concurrently,
+                    while maintaining the order of phase 1,2,3 in each pathway. </li>
+
+
+                </ul>
+
+                <li><h3> Results </h3></li>
+                <div class = "column2">
+                    <figure><img src = "./images/outputConsole.png" style = "width: 500px; height: auto;" class = "center"></figure>
+                    <figcaption> Output from console</figcaption>
+                </div>
+    <figure>
+                <video src="./videos/video.mp4" width="640" height="360" controls class="center">
+                    Your browser does not support the video tag.
+                </video>
+        <figcaption> Output from UI </figcaption>
+    </figure>
+                <br>
+                <br>
+                <li><h2>Resources</h2>
+
+                    <footer>
+                        <p> Lodish, Harvey. <em>Molecular Cell Biology</em>. 5th ed., New York: W. H. Freeman and Co., 2003.</p>
+                    </footer>
+                </li>
+            </ul>
+        </section>
+
+    </div>
+
+    <!-- Footer -->
+    <footer id="footer">
+        <section>
+            <form method="post" action="#">
+                <div class="fields">
+                    <div class="field">
+                        <label for="name">Name</label>
+                        <input type="text" name="name" id="name" />
+                    </div>
+                    <div class="field">
+                        <label for="email">Email</label>
+                        <input type="text" name="email" id="email" />
+                    </div>
+                    <div class="field">
+                        <label for="message">Message</label>
+                        <textarea name="message" id="message" rows="3"></textarea>
+                    </div>
+                </div>
+                <ul class="actions">
+                    <li><input type="submit" value="Send Message" /></li>
+                </ul>
+            </form>
+        </section>
+        <section class="split contact">
+            <section class="alt">
+                <h3>Address</h3>
+                <p>2985 Aurora Ave.,<br />
+                    Boulder, CO, 80303</p>
+            </section>
+            <section>
+                <h3>Phone</h3>
+                <p><a href="#">303-875-8115</a></p>
+            </section>
+            <section>
+                <h3>Email</h3>
+                <p><a href="#">suba3793@colorado.edu</a></p>
+            </section>
+            <section>
+                <h3>Social</h3>
+                <ul class="icons alt">
+
+                    <li><a href="http://github.com/shb0527" class="icon brands alt fa-github"><span class="label">GitHub</span></a></li>
+                </ul>
+            </section>
+        </section>
+    </footer>
+
+    <!-- Copyright -->
+    <div id="copyright">
+        <ul><li>&copy; Untitled</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li></ul>
+    </div>
+
+</div>
+
+<!-- Scripts -->
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/jquery.scrollex.min.js"></script>
+<script src="assets/js/jquery.scrolly.min.js"></script>
+<script src="assets/js/browser.min.js"></script>
+<script src="assets/js/breakpoints.min.js"></script>
+<script src="assets/js/util.js"></script>
+<script src="assets/js/main.js"></script>
+
+</body>
+</html>
+</div>
