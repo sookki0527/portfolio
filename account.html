@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!DOCTYPE HTML>
+<!--
+	Massively by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+
+<html>
+<head>
+    <title>Project1 Page</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+</head>
+<body class="is-preload">
+
+<!-- Wrapper -->
+<div id="wrapper">
+
+    <!-- Header -->
+    <header id="header">
+        <a href="index.html" class="logo">Project 1</a>
+    </header>
+
+    <!-- Nav -->
+    <nav id="nav">
+        <ul class="links">
+            <li><a href="index.html">Main</a></li>
+            <li class ="active"><a href="account.html "> Project1</a></li>
+            <li><a href="employee.html">Project2</a></li>
+            <li><a href="delaunay.html">Project3</a></li>
+        </ul>
+        <ul class="icons">
+            <li><a href="#" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+        </ul>
+    </nav>
+
+    <!-- Main -->
+    <div id="main">
+
+        <!-- Post -->
+        <section class="post">
+            <header class="major">
+
+                <p> Project 1</p>
+                <h1>Account Transaction Dashboard with ML anomaly Detection </h1>
+                <p>   This project is a microservices-based banking dashboard that integrates Spring Boot for RESTful APIs
+                    and a Python-based ML service for detecting fraudulent transactions using Kafka for message streaming.</p>
+            </header>
+            <div class="row">
+                <div class="column2">
+                    <img src = "./images/account/notifiacation2.png" style = "width:100%" class = "center">
+                </div>
+                <br>
+                <div class="column2">
+                    <img src = "./images/account/accountimage.png" style = "width:100%" class = "center">
+                </div>
+            </div>
+
+            <p>  A full-stack microservices application that manages banking accounts and transaction histories,
+                with real-time fraud detection powered by a machine learning model. Built with Spring Boot,
+                Kafka, Flask, and Angular, this system demonstrates end-to-end asynchronous message handling and anomaly
+                prediction using Isolation Forest.</p>
+
+
+            <h2>Architecture </h2>
+            <img src = "./images/account/Diagram.png" style = "width:100%" class = "center">
+
+
+            <h2>Tech Stack</h2>
+            <ul>
+                <li><strong>Spring Boot</strong>: Backend microservice for REST APIs and transaction processing</li>
+                <li><strong>Apache Kafka</strong>: Real-time event streaming and inter-service communication</li>
+                <li><strong>Flask (Python)</strong>: ML microservice exposing Isolation Forest fraud detection model via API</li>
+                <li><strong>Docker</strong>: Containerization and environment consistency across services</li>
+                <li><strong>MySQL</strong>: Relational database for accounts and transaction records</li>
+                <li><strong>Angular</strong>: Frontend UI built with BehaviorSubject and reactive forms</li>
+                <li><strong>WebSocket</strong>: Real-time frontend updates for new transactions and alerts</li>
+            </ul>
+
+            <h2>Features</h2>
+            <ul>
+                <li>Account & transaction creation via secured RESTful endpoints</li>
+                <li>Real-time fraud detection pipeline via Kafka</li>
+                <li>Python ML microservice with REST API integration</li>
+                <li>Fully containerized setup using Docker Compose</li>
+            </ul>
+
+
+            <h2>Structure</h2>
+
+            <h4>Account Service</h4>
+            <ul>
+                <li>Receives deposit and withdraw requests from users via REST APIs.</li>
+                <li>Sends transaction events to Kafka (topic: <code>account-topic</code>) as a Kafka producer.</li>
+                <li>Persists account data into MySQL.</li>
+                <li><strong>Tech:</strong> Spring Boot, JPA, MySQL, Kafka Producer, REST API</li>
+            </ul>
+
+            <h4>Transaction Service</h4>
+            <ul>
+                <li>Receives transfer requests between accounts via REST APIs.</li>
+                <li>Sends transfer events to Kafka (topic: <code>transfer-topic</code>) as a Kafka producer.</li>
+                <li>Persists transaction records into MySQL.</li>
+                <li><strong>Tech:</strong> Spring Boot, JPA, MySQL, Kafka Producer, REST API</li>
+            </ul>
+
+            <h4>Kafka</h4>
+            <ul>
+                <li>Acts as an asynchronous message broker between services.</li>
+                <li>Handles messages from Account, Transaction, and Fraud Detection services.</li>
+                <li>Forwards messages to the Notification Service.</li>
+                <li><strong>Tech:</strong> Apache Kafka, Kafka Topics, Spring Kafka (Producer/Consumer), Kafka-python, Docker Compose</li>
+            </ul>
+
+            <h4>Notification Service</h4>
+            <ul>
+                <li>Consumes Kafka messages from other services and converts them into real-time notifications.</li>
+                <li>Uses WebSocket to push alerts to the frontend in real time.</li>
+                <li><strong>Tech:</strong> Spring Boot, JPA, MySQL, Kafka Producer, REST API</li>
+            </ul>
+
+            <h4>Fraud Detection Service</h4>
+            <ul>
+                <li>Consumes transaction events from Kafka and immediately sends them to the Flask ML API using RestTemplate.</li>
+                <li>Receives prediction results from Flask and publishes them back to Kafka.</li>
+                <li><strong>Tech:</strong> Spring Boot, JPA, MySQL, Kafka Producer, REST API</li>
+            </ul>
+
+            <h3>Flask (ML Service)</h3>
+            <ul>
+                <li>Loads a pre-trained Isolation Forest model and analyzes incoming transaction data.</li>
+                <li>Trained the model using data extracted from the transaction database.</li>
+                <li>Returns a prediction indicating whether a transaction is anomalous or not.</li>
+                <li><strong>Tech:</strong> Flask, Scikit-learn, Joblib, Pandas, NumPy, Docker</li>
+            </ul>
+
+
+            <h3>ML Training Process</h3>
+            <p>
+                Initially, the model was trained using features such as <code>amount</code>, <code>from_account_id</code>, <code>to_account_id</code>, and <code>date</code>.
+                However, this setup was not effective in detecting outliers, as raw account IDs and dates lacked meaningful correlation with transaction behavior.
+            </p>
+            <p>
+                To address this, I engineered statistical features to better reflect behavioral patterns, especially the relationship between <code>amount</code> and <code>from_account_id</code>.
+                Specifically, I computed each sender’s average transaction amount, standard deviation, and transaction count using <code>groupby</code> aggregation:
+            </p>
+            <p>
+                <code>
+                    from_stats = df.groupby('from_account_id')['amount'].agg(['mean', 'std', 'count'])<br/>
+                    .rename(columns={'mean': 'from_mean', 'std': 'from_std', 'count': 'from_count'})
+                </code>
+            </p>
+            <p>
+                These features were then merged into the training dataset to provide context-aware inputs for the Isolation Forest algorithm.
+                Since fraud labels were not available, I used unsupervised learning with Isolation Forest and set the <code>contamination</code> parameter to <code>0.2</code>,
+                simulating 20% anomaly presence by injecting synthetic outliers into the training data.
+            </p>
+
+
+            <img src = "./images/model_result.png" style = "width:100%" class = "center">
+            <h3>More detailed code </h3>
+            <ul class="icons alt">
+
+                <li><a href="http://github.com/sookki0527" class="icon brands alt fa-github"><span class="label">GitHub</span></a>
+            </ul>
+
+        </section>
+
+    </div>
+
+    <!-- Footer -->
+    <footer id="footer">
+        <section>
+            <form method="post" action="#">
+                <div class="fields">
+                    <div class="field">
+                        <label for="name">Name</label>
+                        <input type="text" name="name" id="name" />
+                    </div>
+                    <div class="field">
+                        <label for="email">Email</label>
+                        <input type="text" name="email" id="email" />
+                    </div>
+                    <div class="field">
+                        <label for="message">Message</label>
+                        <textarea name="message" id="message" rows="3"></textarea>
+                    </div>
+                </div>
+                <ul class="actions">
+                    <li><input type="submit" value="Send Message" /></li>
+                </ul>
+            </form>
+        </section>
+        <section class="split contact">
+            <section class="alt">
+                <h3>Address</h3>
+                <p>2985 Aurora Ave., #317a<br />
+                    Boulder, CO, 80303</p>
+            </section>
+            <section>
+                <h3>Phone</h3>
+                <p><a href="#">303-875-8115</a></p>
+            </section>
+            <section>
+                <h3>Email</h3>
+                <p><a href="#">sookki1205@gmail.com</a></p>
+            </section>
+            <section>
+                <h3>Social</h3>
+                <ul class="icons alt">
+
+                    <li><a href="http://github.com/sookki0527" class="icon brands alt fa-github"><span class="label">GitHub</span></a></li>
+                </ul>
+            </section>
+        </section>
+    </footer>
+
+    <!-- Copyright -->
+    <div id="copyright">
+        <ul><li>&copy; Untitled</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li></ul>
+    </div>
+
+</div>
+
+<!-- Scripts -->
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/jquery.scrollex.min.js"></script>
+<script src="assets/js/jquery.scrolly.min.js"></script>
+<script src="assets/js/browser.min.js"></script>
+<script src="assets/js/breakpoints.min.js"></script>
+<script src="assets/js/util.js"></script>
+<script src="assets/js/main.js"></script>
+
+</body>
+</html>
+</div>
+</body>
+</html>

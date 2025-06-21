@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!DOCTYPE HTML>
+<!--
+	Massively by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+
+<html>
+<head>
+    <title>Project2 Page</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+</head>
+<body class="is-preload">
+
+<!-- Wrapper -->
+<div id="wrapper">
+
+    <!-- Header -->
+    <header id="header">
+        <a href="index.html" class="logo">Project 2</a>
+    </header>
+
+    <!-- Nav -->
+    <nav id="nav">
+        <ul class="links">
+            <li><a href="index.html">Main</a></li>
+            <li><a href="account.html "> Project1</a></li>
+            <li class ="active"><a href="employee.html">Project2</a></li>
+            <li><a href="delaunay.html">Project3</a></li>
+
+        </ul>
+        <ul class="icons">
+            <li><a href="#" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+        </ul>
+    </nav>
+
+    <!-- Main -->
+    <div id="main">
+
+        <!-- Post -->
+        <section class="post">
+            <header class="major">
+
+                <p> Project 2</p>
+                <h1> Employee Check-in/Check-out System </h1>
+                <p>  A secure microservice-based system for managing employee attendance records through authenticated REST APIs and a centralized gateway.</p>
+            </header>
+            <div class="row">
+                <div class="column2">
+                    <img src = "./images/employee/employee_dashboard1.png" style = "width:100%" class = "center">
+                </div>
+                <br>
+
+            </div>
+
+            <p> A full-stack microservices application that manages employee check-ins and check-outs,
+                secured through robust JWT-based authentication enforced by Spring Cloud Gateway.
+                Built using Spring Boot, Angular, and Docker, the system showcases a modular, containerized architecture
+                with centralized API routing and stateless authentication. This architecture ensures secure, scalable,
+                and maintainable operations across microservices.
+            </p>
+
+
+            <h2>Architecture </h2>
+            <img src = "./images/employee/Diagram_employee.png" style = "width:100%" class = "center">
+
+
+
+            <h2>Tech Stack</h2>
+            <ul>
+                <li><strong>Angular</strong>: Frontend UI built with reactive forms and BehaviorSubject for real-time responsiveness</li>
+                <li><strong>Spring Boot</strong>: Backend microservices providing RESTful APIs for employee and check-in/out management</li>
+                <li><strong>Spring Security + JWT</strong>: Stateless authentication using JSON Web Tokens; secure role-based access</li>
+                <li><strong>Spring Cloud Gateway</strong>: Acts as API Gateway, routing and securing internal service calls</li>
+                <li><strong>Apache Kafka</strong>: Event-driven messaging pipeline to decouple services and enable asynchronous processing</li>
+                <li><strong>MongoDB</strong>: NoSQL database used for storing log entries and event streams</li>
+                <li><strong>MySQL</strong>: Relational database for employee records and check-in/out data</li>
+                <li><strong>Docker</strong>: Service containerization using Docker Compose for unified development and deployment</li>
+            </ul>
+
+            <h3>✨ Features</h3>
+            <ul>
+                <li>Secure login and role-based access using JWT tokens</li>
+                <li>Centralized API routing with authentication enforcement via Spring Cloud Gateway</li>
+                <li>Real-time employee check-in and check-out with timestamp logging</li>
+                <li>Modular microservice design for scalability and maintainability</li>
+            </ul>
+
+
+            <h2>Structure</h2>
+
+            <h4>Spring Cloud Gateway</h4>
+            <ul>
+                <li>Acts as the single entry point to all backend microservices</li>
+                <li>Performs routing and security filtering </li>
+            </ul>
+
+            <h4>JWT Authentication</h4>
+            <ul>
+                <li>All API access is secured using stateless JWT-based authentication</li>
+                <li>Gateway validates tokens before forwarding requests to internal services</li>
+            </ul>
+
+
+            <h4>Kafka</h4>
+            <ul>
+                <li>Acts as an asynchronous message broker between services.</li>
+                <li>Handles messages microservices.</li>
+                <li><strong>Tech:</strong> Apache Kafka, Kafka Topics, Spring Kafka (Producer/Consumer), Kafka-python, Docker Compose</li>
+            </ul>
+
+            <h4>Microservices</h4>
+            <ul>
+                <li><strong>Attendance Service:</strong> Handles time-stamped check-ins and check-outs</li>
+                <li><strong>Employee Service:</strong> Manages employee login and registration and role-based access</li>
+                <li><strong>Admin-DashBoard </strong> Manages employee check-in and check-out history</li>
+            </ul>
+            <h4>Persistence</h4>
+            <ul>
+                <li>MySQL with Spring Data JPA for storing employee activity and profile data</li>
+            </ul>
+
+            <h4>Containerization</h4>
+            <ul>
+                <li>Fully containerized using Docker and Docker Compose for local and production deployments</li>
+            </ul>
+
+
+
+
+
+
+            <h3>More detailed code </h3>
+            <ul class="icons alt">
+
+                <li><a href="http://github.com/sookki0527" class="icon brands alt fa-github"><span class="label">GitHub</span></a>
+            </ul>
+
+        </section>
+
+    </div>
+
+    <!-- Footer -->
+    <footer id="footer">
+        <section>
+            <form method="post" action="#">
+                <div class="fields">
+                    <div class="field">
+                        <label for="name">Name</label>
+                        <input type="text" name="name" id="name" />
+                    </div>
+                    <div class="field">
+                        <label for="email">Email</label>
+                        <input type="text" name="email" id="email" />
+                    </div>
+                    <div class="field">
+                        <label for="message">Message</label>
+                        <textarea name="message" id="message" rows="3"></textarea>
+                    </div>
+                </div>
+                <ul class="actions">
+                    <li><input type="submit" value="Send Message" /></li>
+                </ul>
+            </form>
+        </section>
+        <section class="split contact">
+            <section class="alt">
+                <h3>Address</h3>
+                <p>2985 Aurora Ave., #317a<br />
+                    Boulder, CO, 80303</p>
+            </section>
+            <section>
+                <h3>Phone</h3>
+                <p><a href="#">303-875-8115</a></p>
+            </section>
+            <section>
+                <h3>Email</h3>
+                <p><a href="#">sookki1205@gmail.com</a></p>
+            </section>
+            <section>
+                <h3>Social</h3>
+                <ul class="icons alt">
+
+                    <li><a href="http://github.com/sookki0527" class="icon brands alt fa-github"><span class="label">GitHub</span></a></li>
+                </ul>
+            </section>
+        </section>
+    </footer>
+
+    <!-- Copyright -->
+    <div id="copyright">
+        <ul><li>&copy; Untitled</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li></ul>
+    </div>
+
+</div>
+
+<!-- Scripts -->
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/jquery.scrollex.min.js"></script>
+<script src="assets/js/jquery.scrolly.min.js"></script>
+<script src="assets/js/browser.min.js"></script>
+<script src="assets/js/breakpoints.min.js"></script>
+<script src="assets/js/util.js"></script>
+<script src="assets/js/main.js"></script>
+
+</body>
+</html>
+</div>
+</body>
+</html>
