@@ -144,25 +144,70 @@
             </ul>
 
 
-            <h3>ML Training Process</h3>
+            <h3>🧠 ML Training Process</h3>
+
             <p>
-                Initially, the model was trained using features such as <code>amount</code>, <code>from_account_id</code>, <code>to_account_id</code>, and <code>date</code>.
-                However, this setup was not effective in detecting outliers, as raw account IDs and dates lacked meaningful correlation with transaction behavior.
+                To build a robust fraud detection model, I initially trained it using raw features such as
+                <code>amount</code>, <code>from_account_id</code>, <code>to_account_id</code>, and <code>date</code>.
+                However, this setup was not effective for detecting anomalies because identifiers like account IDs and timestamps
+                lacked meaningful behavioral correlation.
             </p>
+
+            <h4>🔍 Feature Engineering</h4>
             <p>
-                To address this, I engineered statistical features to better reflect behavioral patterns, especially the relationship between <code>amount</code> and <code>from_account_id</code>.
-                Specifically, I computed each sender’s average transaction amount, standard deviation, and transaction count using <code>groupby</code> aggregation:
+                To improve detection accuracy, I engineered statistical features that captured user-specific transaction behavior—
+                especially the relationship between <code>amount</code> and <code>from_account_id</code>. The following Python code shows
+                how I computed and merged those features:
             </p>
+
+            <pre><code>
+from_stats = df.groupby('from_account_id')['amount'].agg(['mean', 'std', 'count']).rename(
+    columns={'mean': 'from_mean', 'std': 'from_std', 'count': 'from_count'}
+)
+
+to_stats = df.groupby('to_account_id')['amount'].agg(['mean', 'std', 'count']).rename(
+    columns={'mean': 'to_mean', 'std': 'to_std', 'count': 'to_count'}
+)
+
+df = df.merge(from_stats, on='from_account_id', how='left')
+df = df.merge(to_stats, on='to_account_id', how='left')
+</code></pre>
+
             <p>
-                <code>
-                    from_stats = df.groupby('from_account_id')['amount'].agg(['mean', 'std', 'count'])<br/>
-                    .rename(columns={'mean': 'from_mean', 'std': 'from_std', 'count': 'from_count'})
-                </code>
+                These engineered features provided contextual information about how typical or atypical a transaction was,
+                based on both the sender's and receiver's historical patterns.
             </p>
+
+            <h4>🧪 Model Training with Isolation Forest</h4>
             <p>
-                These features were then merged into the training dataset to provide context-aware inputs for the Isolation Forest algorithm.
-                Since fraud labels were not available, I used unsupervised learning with Isolation Forest and set the <code>contamination</code> parameter to <code>0.2</code>,
-                simulating 20% anomaly presence by injecting synthetic outliers into the training data.
+                Due to the absence of labeled fraud data, I chose an unsupervised anomaly detection approach using
+                <code>IsolationForest</code> from Scikit-learn. To simulate an imbalanced dataset, I set
+                <code>contamination = 0.2</code>, assuming roughly 20% of transactions may be anomalous.
+            </p>
+
+            <pre><code>
+from sklearn.ensemble import IsolationForest
+
+model = IsolationForest(
+    n_estimators=100,
+    contamination=0.2,
+    max_features=1.0,
+    random_state=42
+)
+
+model.fit(X)
+df['anomaly'] = model.predict(X)
+df['anomaly_score'] = model.decision_function(X)
+</code></pre>
+
+            <p>
+                Transactions predicted as anomalies are labeled <code>-1</code> in the <code>anomaly</code> column.
+                The <code>anomaly_score</code> gives a confidence score for ranking suspicious transactions.
+            </p>
+
+            <p>
+                Finally, this model was serialized using <code>joblib</code> and deployed as a REST API via Flask,
+                enabling real-time fraud detection within the larger Spring Boot–based microservices architecture.
             </p>
 
 
