@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!DOCTYPE HTML>
+<!--
+	Massively by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+
+<html>
+<head>
+    <title>Project1 Page</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+</head>
+<body class="is-preload">
+
+<!-- Wrapper -->
+<div id="wrapper">
+
+    <!-- Header -->
+    <header id="header">
+        <a href="index.html" class="logo">Project 1</a>
+    </header>
+
+    <!-- Nav -->
+    <nav id="nav">
+        <ul class="links">
+            <li><a href="index.html">Main</a></li>
+            <li class ="active"><a href="metabolic.html "> Project1</a></li>
+            <li><a href="account.html "> Project2</a></li>
+            <li><a href="employee.html">Project3</a></li>
+            <li><a href="delaunay.html">Project4</a></li>
+        </ul>
+        <ul class="icons">
+            <li><a href="#" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+        </ul>
+    </nav>
+
+    <!-- Main -->
+    <div id="main">
+
+        <!-- Post -->
+        <section class="post">
+            <header class="major">
+
+                <p> Project 1</p>
+                <h1> Metabolic Flux Pathway Visualizer (with FBA & Dijkstra) </h1>
+                 <h3> Python + GraphQL + FBA-powered Metabolic Graph Tool for Bioengineers
+                  </h3>
+
+                <p>   This project is a web-based visualizer for metabolic flux pathways, designed to assist bioengineers in analyzing optimal biological routes using Flux Balance Analysis (FBA).
+                    It leverages Python 3, Strawberry GraphQL, and SQLAlchemy to model and compute flux distributions, with Dijkstra's algorithm integrated for pathway optimization.</p>
+            </header>
+            <div class="row">
+                <div class="column2">
+                    <img src = "./images/metabolic/Home.png" style = "width:100%" class = "center">
+                </div>
+                <br>
+<!--                <div class="column2">-->
+<!--                    <img src = "./images/account/.png" style = "width:100%" class = "center">-->
+<!--                </div>-->
+            </div>
+            <p>
+                A production-grade metabolic network analysis tool designed for synthetic biology workflows.
+                This app leverages BiGG models, GraphQL APIs, and advanced graph algorithms to simulate, analyze, and visualize optimal reaction fluxes
+                and metabolite pathways using FBA and Dijkstra, built with Python (FastAPI, SQLAlchemy), Strawberry, and React.
+            </p>
+
+
+
+
+            <h2>Tech Stack</h2>
+            <ul>
+                <li><strong>Python 3</strong>: Core backend language for computation and API logic</li>
+                <li><strong>FastAPI</strong>: Web framework for building asynchronous backend APIs</li>
+                <li><strong>Strawberry GraphQL</strong>: Schema-first GraphQL server built on Python</li>
+                <li><strong>COBRApy</strong>: Metabolic model simulation and Flux Balance Analysis (FBA) using BiGG models</li>
+                <li><strong>NetworkX</strong>: Graph algorithm library used to compute shortest paths with Dijkstra's algorithm</li>
+                <li><strong>SQLAlchemy + SQLite</strong>: ORM and lightweight relational database for model and flux data</li>
+                <li><strong>React + TypeScript</strong>: Frontend interface with typed components and modular design</li>
+                <li><strong>Apollo Client</strong>: GraphQL client for efficient frontend-backend communication</li>
+                <li><strong>React Bootstrap</strong>: UI styling and responsive layout system</li>
+                <li><strong>vis-network.js</strong>: Interactive metabolic pathway graph visualization</li>
+            </ul>
+
+
+            <h2>Key Features</h2>
+
+            <ul>
+                <li><strong>Set Objective</strong> Users can select a target reaction to run flux optimization.</li>
+                <li><strong>FBA Calculation</strong> Performs Flux Balance Analysis using Python and COBRA models.</li>
+                <li><strong>Flux Visualization</strong> Displays top 10 reactions by flux and provides overall flux statistics. </li>
+                <li><strong> Dijkstra Shortest Path</strong>Finds the shortest path from a source metabolite to the product of the objective reaction.</li>
+                <li><strong>Source Recommendation</strong>Automatically suggests meaningful substrates that induce high flux.</li>
+
+            </ul>
+
+            <img src = "./images/metabolic/SelectOF.png" style = "width:100%" class = "center">
+            <img src = "./images/metabolic/SelectOP.png" style = "width:100%" class = "center">
+            <img src = "./images/metabolic/SelectOR.png" style = "width:100%" class = "center">
+
+            <br>
+            <br>
+            <h2>Structure</h2>
+
+            <h4>Model & Database</h4>
+            <ul>
+                <li>Loads <strong>BiGG model</strong> (iJO1366) from BiGG Models Database</li>
+                <ul style = "list-style-type: none;">
+                    <li><strong>iJO1366</strong>: Genome-scale metabolic model of <i>E. coli</i> K-12 MG1655</li>
+                    <li>Contains ~1800 reactions, ~1300 genes, ~1100 metabolites</li>
+                    <li>Used for FBA (Flux Balance Analysis), gene knockout simulation, etc.</li>
+                </ul>
+                <li>Uses <strong>SQLAlchemy</strong> async engine</li>
+                <li>Seeds data from JSON model</li>
+                <li><strong>Tech:</strong> Python 3, SQLAlchemy, SQLite</li>
+            </ul>
+
+            <h4>GraphQL Structure</h4>
+            <ul>
+                <li>Types: <code>Pathway</code>, <code>Reaction</code>, <code>Flux</code>, <code>Metabolite</code></li>
+                <li>Resolvers: Fetches relational data using async SQLAlchemy</li>
+                <li><strong>Tech:</strong> FastAPI, Strawberry GraphQL, async SQLAlchemy</li>
+            </ul>
+
+            <h4>Flux Balance Analysis (using COBRApy)</h4>
+            <ul>
+                <li>User selects an <strong>objective reaction</strong> to maximize</li>
+                <li>Runs FBA computation via <code>COBRApy</code></li>
+                <li>Returns all reaction flux values</li>
+                <li>Mutation stores calculated fluxes into DB</li>
+                <li><strong>Tech:</strong> COBRApy, JSON model, FastAPI, Strawberry</li>
+            </ul>
+
+
+            <h4>Dijkstra Shortest Path (using NetworkX)</h4>
+            <ul>
+                <li>Calculates shortest path from source to target metabolite</li>
+                <li><strong>Source</strong>: metabolite with negative coefficient in selected reaction</li>
+                <li><strong>Target</strong>: metabolite with positive coefficient in selected reaction</li>
+                <li>Path is weighted by flux magnitude (from FBA result)</li>
+                <li><strong>Tech:</strong> NetworkX, Flux data, Python 3</li>
+            </ul>
+
+            <img src = "./images/metabolic/FBAResult2.png" style = "width:100%" class = "center">
+            <br>
+            <br>
+            <img src = "./images/metabolic/ShortestPathResult.png" style = "width:100%" class = "center">
+            <br>
+            <br>
+
+            <h2>GraphQL Backend Code Sample (Strawberry + SQLAlchemy)</h2>
+
+                <pre><code class="language-graphql">
+query GetReactionsByPathway($pathwayId: Int!) {
+  reactionsByPathway(pathwayId: $pathwayId) {
+    id
+    entryId
+    name
+    equation
+    subsystem
+    lowerbound
+    upperbound
+    metaboliteLinks {
+      metaboliteId
+      coeff
+    }
+    fluxLinks {
+      fluxId
+    }
+  }
+}
+</code></pre>
+                <pre><code class="language-python">
+@strawberry.type
+class ReactionType:
+    id: int
+    entry_id: Optional[str] = None
+    name: str
+    equation: str
+    subsystem: str
+    lowerbound: int
+    upperbound: int
+    metabolite_links: Optional[List[MetaboliteReactionLinkType]] = None
+    pathway_links: Optional[List[PathwayReactionLinkType]] = None
+    flux_links: Optional[List[FluxReactionLinkType]] = None
+
+<h3 style="font-weight: 800;">Flux Balance Analysis (FBA) Logic</h3>
+
+<pre><code class="language-python">
+async def run_fba(info: Info, entry_id: str) -> List[FluxType]:
+    model_path = get_model_path()
+    model = load_json_model(model_path)
+    rxn_id = entry_id
+
+    model.objective = rxn_id
+
+    solution = pfba(model)
+    fluxInputs: List[FluxType] = []
+    async with async_session() as session:
+        for entry_id, flux_value in solution.fluxes.items():
+            reaction = await get_reaction_by_entry_id(info, entry_id)
+            if reaction is None:
+                continue
+            reactionId = reaction.id
+            flux_model = FluxModel(value=flux_value)
+            session.add(flux_model)
+            await session.flush()
+
+            link_model = FluxReactionLink(
+                flux_id=flux_model.id,
+                reaction_id=reaction.id
+            )
+            session.add(link_model)
+
+            flux_type = FluxType(
+                id=flux_model.id,
+                value=flux_model.value,
+                flux_links=[
+                    FluxReactionLinkType(
+                        flux_id=flux_model.id,
+                        reaction_id=reaction.id
+                    )
+                ]
+            )
+            fluxInputs.append(flux_type)
+
+        await session.commit()
+
+    return fluxInputs
+</code></pre>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+
+
+
+            <h3>More detailed code </h3>
+            <ul class="icons alt">
+
+                <li><a href="http://github.com/sookki0527" class="icon brands alt fa-github"><span class="label">GitHub</span></a>
+            </ul>
+
+        </section>
+
+    </div>
+
+    <!-- Footer -->
+    <footer id="footer">
+        <section>
+            <form method="post" action="#">
+                <div class="fields">
+                    <div class="field">
+                        <label for="name">Name</label>
+                        <input type="text" name="name" id="name" />
+                    </div>
+                    <div class="field">
+                        <label for="email">Email</label>
+                        <input type="text" name="email" id="email" />
+                    </div>
+                    <div class="field">
+                        <label for="message">Message</label>
+                        <textarea name="message" id="message" rows="3"></textarea>
+                    </div>
+                </div>
+                <ul class="actions">
+                    <li><input type="submit" value="Send Message" /></li>
+                </ul>
+            </form>
+        </section>
+        <section class="split contact">
+            <section class="alt">
+                <h3>Address</h3>
+                <p>9300 Corporate Blvd Rockville 1341<br />
+                    MD 20850 </p>
+            </section>
+            <section>
+                <h3>Phone</h3>
+                <p>303-875-8115</a></p>
+            </section>
+            <section>
+                <h3>Email</h3>
+                <p>sookki1205@gmail.com</a></p>
+            </section>
+            <section>
+                <h3>Social</h3>
+                <ul class="icons alt">
+
+                    <li><a href="http://github.com/sookki0527" class="icon brands alt fa-github"><span class="label">GitHub</span></a></li>
+                </ul>
+            </section>
+        </section>
+    </footer>
+
+    <!-- Copyright -->
+    <div id="copyright">
+        <ul><li>&copy; Untitled</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li></ul>
+    </div>
+
+</div>
+
+<!-- Scripts -->
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/jquery.scrollex.min.js"></script>
+<script src="assets/js/jquery.scrolly.min.js"></script>
+<script src="assets/js/browser.min.js"></script>
+<script src="assets/js/breakpoints.min.js"></script>
+<script src="assets/js/util.js"></script>
+<script src="assets/js/main.js"></script>
+
+</body>
+</html>
+</div>
+</body>
+
+
+</html>
