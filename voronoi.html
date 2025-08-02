@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!DOCTYPE HTML>
+<!--
+	Massively by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+
+<html>
+<head>
+    <title>Project 1 Page</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+</head>
+<body class="is-preload">
+
+<!-- Wrapper -->
+<div id="wrapper">
+
+    <!-- Header -->
+    <header id="header">
+        <a href="index.html" class="logo">Project 1</a>
+    </header>
+
+    <!-- Nav -->
+    <nav id="nav">
+        <ul class="links">
+            <li><a href="index.html">Main</a></li>
+            <li class ="active"><a href="voronoi.html"> Project1</a></li>
+            <li><a href="metabolic.html "> Project2</a></li>
+            <li><a href="account.html "> Project3</a></li>
+            <li><a href="employee.html">Project4</a></li>
+
+        </ul>
+        <ul class="icons">
+            <li><a href="http://github.com/sookki0527" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+        </ul>
+    </nav>
+
+    <!-- Main -->
+    <div id="main">
+
+        <!-- Post -->
+        <section class="post">
+            <header class="major">
+
+                <p> Project 1</p>
+                <h1>Delaunay Triangulation: Custom Divide & Conquer vs. CGAL with Multithreading</h1>
+                <p>A side-by-side comparison of two Delaunay Triangulation methods — a manual C++ implementation using divide and conquer, and a CGAL-based approach with multithreaded visualization.</p>
+
+
+            </header>
+            <div class="row">
+                <div class="column2">
+                    <video width="640" height="480" controls class=" center">
+                        <source src="images/voronoi/out.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+
+                </div>
+                <br>
+                <br>
+
+                <div class="column2">
+                    <img src = "./images/voronoi/custom/5.png" style = "width:50%" class = "center">
+                </div>
+            </div>
+            <br>
+            <p>
+                A deep analysis of the algorithm was conducted to implement merging by forming new LR-edges through a
+                divide-and-conquer approach. The custom triangulation process was visualized using SFML. For the CGAL-based approach,
+                the window was divided into four sectors, and each triangulation was processed in parallel using a thread pool.
+                The shared <code>results</code> container was protected using a mutex to ensure thread-safe access.
+                This was visualized using OpenGL.
+            </p>
+
+
+
+            <p><strong>Tools & Technologies:</strong> C++17, custom divide-and-conquer algorithms, CGAL for computational geometry, OpenGL for real-time visualization, SFML for auxiliary rendering, multithreaded execution using thread pools and mutexes.</p>
+
+
+            <h2> 1. Delaunay Triangulation custom Implementation using Divide and Conquer Algorithm</h2>
+
+            <h4>Algorithms:</h4>
+            <ul>
+                <li>Guibas, L. and Stolfi, J., "Primitives for the Manipulation of General Subdivisions and the Computation of Voronoi Diagrams", ACM Transactions on Graphics, Vol.4, No.2, April 1985, pages 74-123.</li>
+                <li>http://www.geom.uiuc.edu/~samuelp/del_project.html#acknowledgments</li>
+
+            </ul>
+
+            <h2>Delaunay Triangulation – Divide & Conquer</h2>
+            <div class="column2">
+                <img src = "./images/voronoi/custom/LREdge.png" style = "width:100%" class = "center">
+            </div>
+            <br>
+            <ol>
+                <li>
+                    <strong>Recursive Subdivision</strong><br>
+                    The sorted point set is recursively divided into smaller subsets until each contains only 2 or 3 points. These minimal subsets are directly triangulated into either a single edge (2 points) or a triangle (3 points).
+                </li>
+
+                <li>
+                    <strong>Establishing the Base LR-Edge</strong><br>
+                    During the merge phase, a base Left-Right (LR) edge is created, connecting a point from the left subset to a point from the right. The base LR-edge is the lowest non-intersecting edge that bridges the two halves.
+                </li>
+
+                <li>
+                    <strong>Selecting Valid Candidates & Merging</strong><br>
+                    For each new LR-edge, potential candidate points are selected from both the left and right subsets. A candidate is valid if:
+                    <ul>
+                        <li>The clockwise angle between the base LR-edge and the candidate is less than 180°</li>
+                        <li>The circumcircle formed by the base LR-edge and the candidate does not enclose the next candidate</li>
+                    </ul>
+                    If a candidate violates these, the corresponding LL or RR-edge is removed.<br>
+                    This process repeats recursively upward, adding valid LR-edges and merging the triangulations, until the full Delaunay triangulation is complete.
+                </li>
+            </ol>
+
+
+            <h3> code </h3>
+
+
+            <pre><code>
+template&lt;typename T&gt;
+void delaunay&lt;T&gt;::slicingVector(std::vector&lt;Vector2&lt;T&gt;&gt;&amp; vertices)
+{
+    if (vertices.size() &lt;= 3) {
+        createEdges(vertices);
+        if (vertices.size() == 3) {
+            ...
+            _triangles.push_back({
+                {a.x, a.y},
+                {b.x, b.y},
+                {c.x, c.y}
+            });
+        } else if (vertices.size() == 2) {
+            _triangles.push_back({
+                {vertices[0].x, vertices[0].y},
+                {vertices[1].x, vertices[1].y}
+            });
+        }
+        return;
+    }
+
+    size_t mid = vertices.size() / 2;
+    std::vector&lt;Vector2&lt;T&gt;&gt; left(vertices.begin(), vertices.begin() + mid);
+    std::vector&lt;Vector2&lt;T&gt;&gt; right(vertices.begin() + mid, vertices.end());
+    std::cout &lt;&lt; vertices.size() &lt;&lt; std::endl;
+
+    slicingVector(left);
+    slicingVector(right);
+
+    std::optional&lt;std::pair&lt;std::pair&lt;T, T&gt;, std::pair&lt;T, T&gt;&gt;&gt; new_LR = potentials(left, right, false);
+    std::optional&lt;std::pair&lt;std::pair&lt;T, T&gt;, std::pair&lt;T, T&gt;&gt;&gt; new_LR2 = potentials(left, right, true);
+                }
+
+</code></pre>
+            <pre><code>
+template &lt;typename T&gt;
+std::optional&lt;std::pair&lt;std::pair&lt;T, T&gt;, std::pair&lt;T, T&gt;&gt;&gt;
+delaunay&lt;T&gt;::potentials(std::vector&lt;Vector2&lt;T&gt;&gt;&amp; vertices1,
+                        std::vector&lt;Vector2&lt;T&gt;&gt;&amp; vertices2,
+                        bool flipped) {
+                    ...
+    while (new_LR.has_value()) {
+
+        auto [np1, np2] = new_LR.value();
+
+        ///******************  RR edge  *************************/
+
+        T start = 0;
+
+        std::vector&lt;VertexWithAngle&gt; angle_sorted_vertices_r;
+
+        // Vertices in Right Side
+          ...
+
+        std::sort(angle_sorted_vertices_r.begin(), angle_sorted_vertices_r.end(),
+                  [](const VertexWithAngle&amp; a, const VertexWithAngle&amp; b) {
+                      return a.first &lt; b.first;
+                  });
+
+        std::optional&lt;VertexType&gt; next_lr_candidate_r;
+        for (auto&amp; candidate : angle_sorted_vertices_r) {
+            const TriangleType t(p1, p2, candidate.second);
+            start++;
+
+            bool has_inner_point = false;
+            for (auto it = angle_sorted_vertices_r.begin() + start; it != angle_sorted_vertices_r.end(); it++) {
+                if (t.circumCircleContains(it-&gt;second)) {
+                    has_inner_point = true;
+                    std::pair&lt;double, double&gt; c = {candidate.second.x, candidate.second.y};
+
+                    _edges.erase(std::remove_if(begin(_edges), end(_edges), [np2, c]
+                        (std::pair&lt;std::pair&lt;T, T&gt;, std::pair&lt;T, T&gt;&gt;&amp; j) {
+                            return containstwoPoints(j, np2, c);
+                        }), end(_edges));
+                    break;
+                }
+            }
+
+            if (!has_inner_point) {
+                next_lr_candidate_r = candidate.second;
+                break;
+                    }
+        }
+
+                     ///******************  LL edge  *************************/
+
+                ...
+    }
+}
+</code></pre>
+
+            <h3>Notable Observations</h3>
+            <ul>
+                <li>Since the initial point set was sorted by x-coordinate, many of the resulting triangles are elongated along the y-axis.</li>
+                <li>The base LR-edge starts with the lowest points along the y-axis, which caused some upper points to remain unconnected.
+                    &rarr; To solve this, the y-axis was flipped and a new base LR-edge was created from the flipped perspective.</li>
+            </ul>
+            <div class="column2">
+                <img src = "./images/voronoi/custom/9.png" style = "width:50%" class = "center">
+            </div>
+  <br>
+            <br>
+
+            <h2> 2. CGAL Visualization using MultiThreading</h2>
+            <p>Parallelized processing using a thread pool for enhanced performance</p>
+            <h3>Implementation Details</h3>
+            <ol>
+                <li> Utilized CGAL’s 2D Delaunay triangulation API for computational geometry operations. </li>
+                <li> Visualized triangulation using OpenGL. </li>
+                <li> For parallel processing, the screen was divided into four regions, each displaying a separate triangulation. Each region corresponds to one thread. </li>
+                <li> Each thread independently performs triangulation and populates a shared <code>results</code> vector. This shared vector is protected with a mutex to prevent simultaneous access by multiple threads. </li>
+            </ol>
+
+            <h3>Additional Features</h3>
+            <ul>
+                <li> Introduced a moving ball — only the region through which the ball passes displays its triangulation. </li>
+            </ul>
+
+            <br>
+            <h3> code </h3>
+
+            <pre><code>
+void threading(){
+    thread_safe_queue&lt;TriangulationTask&gt; task_queue;
+    std::mutex results_mutex;
+
+    auto worker = [&]() {
+        while (true) {
+            TriangulationTask task;
+            if (!task_queue.try_pop(task)) break;
+            triangulate(task);
+            std::lock_guard&lt;std::mutex&gt; lock(results_mutex);
+            results.push_back(std::move(task));
+        }
+    };
+
+    for(int i = 0; i &lt; N; i++){
+        TriangulationTask task;
+        task.input_file = "data/voronoi" + std::to_string(i+1) + ".cin";
+
+        std::ifstream in(task.input_file);
+        std::istream_iterator&lt;Point&gt; begin(in), end;
+        task.points = std::vector&lt;Point&gt;(begin, end);
+        task_queue.push(task);
+    }
+
+    std::vector&lt;std::thread&gt; threads;
+    for (int i = 0; i &lt; 4; ++i)
+        threads.emplace_back(worker);
+
+    for (auto&amp; t : threads)
+        t.join();
+}
+</code></pre>
+            <br>
+            <div style="display: flex; justify-content: center; gap: 20px;">
+                <img src="./images/voronoi/cgal2.png" style="width: 45%;">
+                <img src="./images/voronoi/cgal3.png" style="width: 45%;">
+            </div>
+
+            <br>
+            <br>
+            <h3>More detailed code </h3>
+            <ul class="icons alt">
+
+                <li><a href="http://github.com/sookki0527" class="icon brands alt fa-github"><span class="label">GitHub</span></a>
+            </ul>
+        </section>
+
+    </div>
+
+    <!-- Footer -->
+    <footer id="footer">
+        <section>
+            <form method="post" action="#">
+                <div class="fields">
+                    <div class="field">
+                        <label for="name">Name</label>
+                        <input type="text" name="name" id="name" />
+                    </div>
+                    <div class="field">
+                        <label for="email">Email</label>
+                        <input type="text" name="email" id="email" />
+                    </div>
+                    <div class="field">
+                        <label for="message">Message</label>
+                        <textarea name="message" id="message" rows="3"></textarea>
+                    </div>
+                </div>
+                <ul class="actions">
+                    <li><input type="submit" value="Send Message" /></li>
+                </ul>
+            </form>
+        </section>
+        <section class="split contact">
+            <section class="alt">
+                <h3>Address</h3>
+                <p>9300 Corporate Blvd Rockville 1341<br />
+                    MD 20850 </p>
+            </section>
+            <section>
+                <h3>Phone</h3>
+                <p><a href="#">303-875-8115</a></p>
+            </section>
+            <section>
+                <h3>Email</h3>
+                <p><a href="#">sookki1205@gmail.com</a></p>
+            </section>
+            <section>
+                <h3>Social</h3>
+                <ul class="icons alt">
+
+                    <li><a href="http://github.com/sookki0527" class="icon brands alt fa-github"><span class="label">GitHub</span></a></li>
+                </ul>
+            </section>
+        </section>
+    </footer>
+
+    <!-- Copyright -->
+    <div id="copyright">
+        <ul><li>&copy; Untitled</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li></ul>
+    </div>
+
+</div>
+
+<!-- Scripts -->
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/jquery.scrollex.min.js"></script>
+<script src="assets/js/jquery.scrolly.min.js"></script>
+<script src="assets/js/browser.min.js"></script>
+<script src="assets/js/breakpoints.min.js"></script>
+<script src="assets/js/util.js"></script>
+<script src="assets/js/main.js"></script>
+
+</body>
+</html>
+</div>
+</body>
+</html>
